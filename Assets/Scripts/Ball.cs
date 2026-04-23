@@ -35,6 +35,21 @@ public class Ball : MonoBehaviour
         rb.AddForce(direction * baseSpeed, ForceMode2D.Impulse);
         currentSpeed = baseSpeed;
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 檢查撞到的物件是否有 BouncySurface 組件，或者直接讓它撞到任何東西都加速
+        // 這裡建議設定一個倍率，例如 1.1f 代表增加 10% 速度
+        float speedMultiplier = 1.1f;
+
+        // 更新目前的物理速度
+        currentSpeed *= speedMultiplier;
+
+        // 限制最大速度，避免球速快到穿牆
+        currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
+
+        // 立即將新速度套用到物理引擎，確保反彈後速度立刻變快
+        rb.velocity = rb.velocity.normalized * currentSpeed;
+    }
 
     private void FixedUpdate()
     {

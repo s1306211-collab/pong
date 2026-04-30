@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Net.Sockets;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Paddle computerPaddle;
     [SerializeField] private Text playerScoreText;
     [SerializeField] private Text computerScoreText;
+    [SerializeField] private GameObject survivalWall;
 
     private int playerScore;
     private int computerScore;
@@ -32,7 +34,6 @@ public class GameManager : MonoBehaviour
         // 按下 Esc 鍵回到選單
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // 請確保這裡填入的場景名稱與你「選單場景」的名稱完全一致（例如 "Menu"）
             SceneManager.LoadScene("Menu");
         }
     }
@@ -42,26 +43,29 @@ public class GameManager : MonoBehaviour
         SetPlayerScore(0);
         SetComputerScore(0);
         NewRound();
-        if (SceneChanger.SelectedMode == "Survival Mode")
-        {
-            computerPaddle.transform.localScale = new Vector3(2f, 200f, 1f);
-        }
         
     }
 
     public void NewRound()
     {
         playerPaddle.ResetPosition();
-        computerPaddle.ResetPosition();
 
-        // 1. 先清除場景中殘留的球 (避免上一局的球還在跑)
-        GameObject[] existingBalls = GameObject.FindGameObjectsWithTag("Ball");
-        foreach (GameObject b in existingBalls)
+        if (SceneChanger.SelectedMode == "Surival Mode")
         {
-            Destroy(b);
+           computerPaddle.gameObject.SetActive(false); // 隱藏電腦
+            survivalWall.SetActive(true);
+            if (computerScoreText != null) computerScoreText.gameObject.SetActive(false);
+        }
+        else
+        {
+            computerPaddle.gameObject.SetActive(true);  // 顯示電腦
+            survivalWall.SetActive(true);
+            computerPaddle.ResetPosition();
         }
 
-        // 2. 延遲一秒後生成新球
+        // 清除舊球並生成新球
+        GameObject[] existingBalls = GameObject.FindGameObjectsWithTag("Ball");
+        foreach (GameObject b in existingBalls) { Destroy(b); }
         CancelInvoke();
         Invoke(nameof(StartRound), 1f);
     }
@@ -71,6 +75,8 @@ public class GameManager : MonoBehaviour
         // 呼叫你的 Spawner 根據模式生成球
         // 這裡我們需要微調一下 BallSpawner，讓它能被外部呼叫
         ballSpawner.SpawnByMode();
+        string currentMode = SceneChanger.SelectedMode;
+        Debug.Log(currentMode);
     }
 
     public void OnPlayerScored()
@@ -97,4 +103,9 @@ public class GameManager : MonoBehaviour
         computerScoreText.text = score.ToString();
     }
 
+    public void AddSurvivalScore(int points)
+    {
+        playerScore += points;
+        playerScoreText.text = playerScore.ToString();
+    }
 }

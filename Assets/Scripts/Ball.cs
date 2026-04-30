@@ -6,7 +6,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
 
     public float baseSpeed = 5f;
-    public float maxSpeed = Mathf.Infinity;
+    public float maxSpeed = 30f; // 建議設一個上限，以免球速無限快到穿牆
     public float currentSpeed { get; set; }
 
     private void Awake()
@@ -22,41 +22,45 @@ public class Ball : MonoBehaviour
 
     public void AddStartingForce()
     {
-        // Flip a coin to determine if the ball starts left or right
         float x = Random.value < 0.5f ? -1f : 1f;
+        float y = Random.value < 0.5f ? Random.Range(-1f, -0.5f) : Random.Range(0.5f, 1f);
 
-        // Flip a coin to determine if the ball goes up or down. Set the range
-        // between 0.5 -> 1.0 to ensure it does not move completely horizontal.
-        float y = Random.value < 0.5f ? Random.Range(-1f, -0.5f)
-                                      : Random.Range(0.5f, 1f);
-
-        // Apply the initial force and set the current speed
         Vector2 direction = new Vector2(x, y).normalized;
-        rb.AddForce(direction * baseSpeed, ForceMode2D.Impulse);
         currentSpeed = baseSpeed;
+        rb.velocity = direction * currentSpeed; // 直接給速度
     }
+
+    // Ball.cs 中的 OnCollisionEnter2D
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // 檢查撞到的物件是否有 BouncySurface 組件，或者直接讓它撞到任何東西都加速
-        // 這裡建議設定一個倍率，例如 1.1f 代表增加 10% 速度
-        float speedMultiplier = 1.1f;
+        // 取得碰撞法線並計算反射向量 (確保一定會反彈)
+        Vector2 normal = collision.GetContact(0).normal;
+        Vector2 reflectDir = Vector2.Reflect(rb.velocity.normalized, normal);
 
-        // 更新目前的物理速度
-        currentSpeed *= speedMultiplier;
+        if (SceneChanger.SelectedMode == "Surival Mode")
+        {
+            // 只有撞到「玩家拍子」才加分
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                FindObjectOfType<GameManager>().AddSurvivalScore(1);
+                currentSpeed *= 1.05f; // 撞到拍子加速，增加難度
+                Debug.Log("接到球！加 1 分");
+            }
 
-        // 限制最大速度，避免球速快到穿牆
+            // 如果撞到的是 SurvivalWall，這裡不寫加分，它會執行下面的反彈邏輯
+        }
+
+        // 統一的反彈速度處理
         currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-
-        // 立即將新速度套用到物理引擎，確保反彈後速度立刻變快
-        rb.velocity = rb.velocity.normalized * currentSpeed;
+        rb.velocity = reflectDir * currentSpeed;
     }
 
     private void FixedUpdate()
     {
-        // Clamp the velocity of the ball to the max speed
-        Vector2 direction = rb.velocity.normalized;
-        currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-        rb.velocity = direction * currentSpeed;
+        // 確保球速始終保持在 currentSpeed，不會因為物理摩擦力變慢
+        if (rb.velocity.magnitude > 0)
+        {
+            rb.velocity = rb.velocity.normalized * currentSpeed;
+        }
     }
-
 }

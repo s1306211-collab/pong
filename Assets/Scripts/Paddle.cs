@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Net.Sockets;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class Paddle : MonoBehaviour
@@ -19,6 +20,9 @@ public abstract class Paddle : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.position = new Vector2(rb.position.x, 0f);
     }
+
+    
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

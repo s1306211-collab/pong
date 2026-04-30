@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Net.Sockets;
+using UnityEngine;
 
 public class ComputerPaddle : Paddle
 {
@@ -57,5 +58,19 @@ public class ComputerPaddle : Paddle
             }
         }
         targetBall = closestBall;
+    }
+
+    public void surivalpaddle()
+    {
+        if (SceneChanger.SelectedMode == "Surival Mode")
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            string currentMode = SceneChanger.SelectedMode;
+            Debug.Log(currentMode);
+
+        }
     }
 }

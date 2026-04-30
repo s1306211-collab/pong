@@ -7,6 +7,8 @@ public class SceneChanger : MonoBehaviour
 
     public void ChangeScene(string modeAndScene)
     {
+        
+
         string[] parts = modeAndScene.Split(',');
         SelectedMode = parts[0];
         SceneManager.LoadScene(parts[1]); 

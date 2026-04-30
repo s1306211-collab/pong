@@ -476,6 +476,7 @@ MonoBehaviour:
   computerPaddle: {fileID: 1362602729}
   playerScoreText: {fileID: 228497188}
   computerScoreText: {fileID: 618610096}
+  survivalWall: {fileID: 954571796}
 --- !u!4 &417150623
 Transform:
   m_ObjectHideFlags: 0
@@ -674,7 +675,7 @@ GameObject:
   - component: {fileID: 954571797}
   - component: {fileID: 954571799}
   m_Layer: 0
-  m_Name: Right Wall
+  m_Name: SurvivalWall
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -735,7 +736,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.4, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_LocalScale: {x: 1, y: 11.72, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1354,8 +1355,8 @@ GameObject:
   - component: {fileID: 1535292066}
   - component: {fileID: 1535292069}
   m_Layer: 0
-  m_Name: Player Paddle
-  m_TagString: Paddle
+  m_Name: Player
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

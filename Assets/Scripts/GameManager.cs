@@ -50,9 +50,9 @@ public class GameManager : MonoBehaviour
     {
         playerPaddle.ResetPosition();
 
-        if (SceneChanger.SelectedMode == "Surival Mode")
+        if (SceneChanger.SelectedMode == "Survival Mode")
         {
-           computerPaddle.gameObject.SetActive(false); // 隱藏電腦
+            computerPaddle.gameObject.SetActive(false); // 隱藏電腦
             survivalWall.SetActive(true);
             if (computerScoreText != null) computerScoreText.gameObject.SetActive(false);
         }

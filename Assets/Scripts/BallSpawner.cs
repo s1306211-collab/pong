@@ -5,7 +5,7 @@ public class BallSpawner : MonoBehaviour
     public GameObject ballPrefab;
     public int ballCount = 1;
 
-    // ±NÅÞ¿è«Ê¸Ë¡A¤è«K GameManager ©I¥s
+    // ï¿½Nï¿½Þ¿ï¿½Ê¸Ë¡Aï¿½ï¿½K GameManager ï¿½Iï¿½s
     public void SpawnByMode()
     {
         if (SceneChanger.SelectedMode == "Multi-ball Mode")
@@ -13,7 +13,7 @@ public class BallSpawner : MonoBehaviour
             ballCount = 2;
         }
         else
-        {
+        { 
             ballCount = 1;
         }
         SpawnMultipleBalls(ballCount);

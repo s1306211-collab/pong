@@ -32,28 +32,29 @@ public class Ball : MonoBehaviour
 
     // Ball.cs 中的 OnCollisionEnter2D
     private void OnCollisionEnter2D(Collision2D collision)
+{
+    // 1. 取得碰撞法線並計算反射向量 (確保一定會反彈)
+    Vector2 normal = collision.GetContact(0).normal;
+    Vector2 reflectDir = Vector2.Reflect(rb.velocity.normalized, normal);
+    currentSpeed *= 1.05f;
+
+    //
+    //survival mode
+    //
+
+    if (SceneChanger.SelectedMode == "Survival Mode") 
     {
-        // 取得碰撞法線並計算反射向量 (確保一定會反彈)
-        Vector2 normal = collision.GetContact(0).normal;
-        Vector2 reflectDir = Vector2.Reflect(rb.velocity.normalized, normal);
-
-        if (SceneChanger.SelectedMode == "Surival Mode")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            // 只有撞到「玩家拍子」才加分
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                FindObjectOfType<GameManager>().AddSurvivalScore(1);
-                currentSpeed *= 1.05f; // 撞到拍子加速，增加難度
-                Debug.Log("接到球！加 1 分");
-            }
-
-            // 如果撞到的是 SurvivalWall，這裡不寫加分，它會執行下面的反彈邏輯
+            FindObjectOfType<GameManager>().AddSurvivalScore(1);
+            Debug.Log("接到球！加 1 分");
         }
-
-        // 統一的反彈速度處理
-        currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-        rb.velocity = reflectDir * currentSpeed;
     }
+
+    // 3. 統一的反彈速度處理[cite: 1]
+    currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
+    
+}
 
     private void FixedUpdate()
     {

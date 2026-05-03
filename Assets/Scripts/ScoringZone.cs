@@ -12,8 +12,7 @@ public class ScoringZone : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out Ball _))
         {
-            // 如果是生存模式，且這面牆的名字是 SurvivalWall，就直接返回，不重開
-            if (SceneChanger.SelectedMode == "Surival Mode" && gameObject.name == "SurvivalWall")
+            if (SceneChanger.SelectedMode == "Survival Mode" && gameObject.name == "SurvivalWall")
             {
                 Debug.Log("return");
                 return;
@@ -21,7 +20,11 @@ public class ScoringZone : MonoBehaviour
             }
             else
             {
-                // 否則正常重開 (玩家後方的牆會走這裡)
+                if (SceneChanger.SelectedMode == "Survival Mode")
+                {
+                    FindObjectOfType<GameManager>().NewGame();
+                    Debug.Log("你輸了!");
+                }
                 Debug.Log("goal");
                 scoreTrigger.Invoke();
             }

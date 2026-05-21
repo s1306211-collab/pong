@@ -173,3 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 5
   maxSpeed: Infinity
+  targetEventMode: Random Event
+  powerUpChance: 0.5
+  eventDuration: 8
+  bigScaleMultiplier: 5

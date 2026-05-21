@@ -7,6 +7,7 @@ TagManager:
   - Ball
   - Paddle
   - Wall
+  - Computer
   layers:
   - Default
   - TransparentFX

@@ -781,6 +781,16 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 1c84f5eb0615aa440b9d7e74673e36d9, type: 2}
+    - target: {fileID: 3389117164367716149, guid: 00db0e1e8817a1848839d9a09cdb4465,
+        type: 3}
+      propertyPath: eventDuration
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3389117164367716149, guid: 00db0e1e8817a1848839d9a09cdb4465,
+        type: 3}
+      propertyPath: bigScaleMultiplier
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4134901973890075223, guid: 00db0e1e8817a1848839d9a09cdb4465,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1017,7 +1027,7 @@ GameObject:
   - component: {fileID: 1362602731}
   m_Layer: 0
   m_Name: Computer Paddle
-  m_TagString: Paddle
+  m_TagString: Computer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
